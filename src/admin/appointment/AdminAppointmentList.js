@@ -10,28 +10,28 @@ import moment from "moment";
 
 const cookies = new Cookies();
 
-const UserJobApplicationList = () => {
+const AdminAppointmentList = () => {
   // State Variables
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const [token, setToken] = useState("");
-  const [jobApplications, setJobApplications] = useState([]);
+  const [appointments, setDoctorAppointments] = useState([]);
   const [apiLink, setApiLink] = useState(API);
   const [msg, setMsg] = useState("");
 
   let { id } = useParams();
 
-  const [jobId, setJobId] = useState(id);
+  const [doctorId, setdoctorId] = useState(id);
 
-  async function fetchJobApplicationList() {
+  async function fetchAppointments() {
     try {
       let token = cookies.get("token");
       setToken(token);
-      let response = await UserApi.jobApplications(token, jobId);
+      let response = await UserApi.appointments(token, doctorId);
       console.log(response);
       if (response.status == 200) {
-        setJobApplications(response.data);
+        setDoctorAppointments(response.data);
       } else {
-        setJobApplications([]);
+        setDoctorAppointments([]);
       }
     } catch (error) {
       console.log(error);
@@ -41,38 +41,38 @@ const UserJobApplicationList = () => {
   // Use Effect Method
 
   useEffect(() => {
-    fetchJobApplicationList();
+    fetchAppointments();
   }, []);
 
   // Execution Methods
 
-  const selectApplication = async (event, jobId) => {
-    let selectApplication = await UserApi.updateJobApplication(token, {
-      id: jobId,
-      application_status: "selected",
+  const acceptApplication = async (event, doctorId) => {
+    let acceptApplication = await UserApi.updateAppointment(token, {
+      id: doctorId,
+      app_status: "accepted",
     });
-    if (selectApplication.status == 200) {
-      setMsg("Application Selected");
+    if (acceptApplication.status == 200) {
+      setMsg("Appointment Accepted");
       setShowSuccessMsg(true);
     } else {
       return;
     }
-    fetchJobApplicationList();
+    fetchAppointments();
   };
 
-  const rejectApplication = async (event, jobId) => {
+  const rejectApplication = async (event, doctorId) => {
     event.preventDefault();
-    let selectApplication = await UserApi.updateJobApplication(token, {
-      id: jobId,
-      application_status: "rejected",
+    let rejectApplication = await UserApi.updateAppointment(token, {
+      id: doctorId,
+      app_status: "rejected",
     });
-    if (selectApplication.status == 200) {
-      setMsg("Application Rejected");
+    if (rejectApplication.status == 200) {
+      setMsg("Appointment Rejected");
       setShowSuccessMsg(true);
     } else {
       return;
     }
-    fetchJobApplicationList();
+    fetchAppointments();
   };
 
   return (
@@ -85,69 +85,60 @@ const UserJobApplicationList = () => {
         )}
         <div className="col-10 mx-auto card shadow">
           <div className="card-body">
-            {jobApplications.length > 0 && (
+            {appointments.length > 0 && (
               <div className="table-responsive">
                 <table className="table table-striped">
                   <thead>
                     <tr>
-                      <th scope="col">Job Title</th>
+                      <th scope="col">Doctor</th>
                       <th scope="col">User</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Apply Date</th>
-                      <th scope="col">Resume</th>
+                      <th scope="col">User Email</th>
+                      <th scope="col">Appt. Date</th>
                       <th scope="col">Status</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {jobApplications.map((jobApp) => (
-                      <tr key={jobApp._id}>
-                        <td>{jobApp.job.title}</td>
-                        <td>{jobApp.user.name}</td>
-                        <td>{jobApp.user.email}</td>
-                        <td>{moment(jobApp.date).format("DD/MM/YYYY")}</td>
+                    {appointments.map((doctorApp) => (
+                      <tr key={doctorApp._id}>
+                        <td>{doctorApp.doctor.title}</td>
+                        <td>{doctorApp.user.name}</td>
+                        <td>{doctorApp.user.email}</td>
+                        <td>{moment(doctorApp.date).format("DD/MM/YYYY")}</td>
                         <td>
-                          <a
-                            href={apiLink + "/uploads/resume/" + jobApp.resume}
-                            target="_blank"
-                          >
-                            Download
-                          </a>
-                        </td>
-                        <td>
-                          {jobApp.application_status == "pending" && (
+                          {doctorApp.app_status == "pending" && (
                             <span className="badge badge-warning">Pending</span>
                           )}
-                          {jobApp.application_status == "selected" && (
-                            <span className="badge badge-success">Selected</span>
+                          {doctorApp.app_status == "accepted" && (
+                            <span className="badge badge-success">Accepted</span>
                           )}
-                          {jobApp.application_status == "rejected" && (
+                          {doctorApp.app_status == "rejected" && (
                             <span className="badge badge-danger">Rejected</span>
                           )}
                         </td>
                         <td>
-                          {jobApp.application_status == "pending" && (
+                          {doctorApp.app_status == "pending" && (
                             <div className="btn-group">
                               <button
                                 className="btn btn-sm btn-primary"
                                 onClick={() =>
-                                  selectApplication(this, jobApp._id)
+                                  acceptApplication(this, doctorApp._id)
                                 }
                               >
-                                Select
+                                Accept
                               </button>
                               <button
                                 className="btn btn-sm btn-danger"
                                 onClick={() =>
-                                  rejectApplication(this, jobApp._id)
+                                  rejectApplication(this, doctorApp._id)
                                 }
                               >
                                 Reject
                               </button>
                             </div>
                           )}
-                          {jobApp.application_status != "pending" && (
+                          {doctorApp.app_status != "pending" && (
                             <div className="btn-group">
                               <button
                                 className="btn btn-sm btn-primary"
@@ -170,8 +161,8 @@ const UserJobApplicationList = () => {
                 </table>
               </div>
             )}
-            {jobApplications.length == 0 && (
-              <div className="alert alert-warning">No applications yet!</div>
+            {appointments.length == 0 && (
+              <div className="alert alert-warning">No appointment yet!</div>
             )}
           </div>
         </div>
@@ -180,4 +171,4 @@ const UserJobApplicationList = () => {
   );
 };
 
-export default UserJobApplicationList;
+export default AdminAppointmentList;

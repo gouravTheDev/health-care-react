@@ -1,9 +1,9 @@
 import { API } from "../../backend";
 
 class UserApi {
-  jobList = async (token) => {
+  doctorList = async (token) => {
     try {
-      let jobList = await fetch(`${API}/job/list`, {
+      let doctorList = await fetch(`${API}/doctor/list`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -11,40 +11,42 @@ class UserApi {
           token: token,
         },
       });
-      jobList = await jobList.json();
-      return jobList;
+      doctorList = await doctorList.json();
+      return doctorList;
     } catch (error) {
       console.log(error);
     }
   };
 
-  applyJob = async (token, data) => {
+  makeAppointment = async (token, data) => {
     try {
-      let jobApplication = await fetch(`${API}/job-application/apply`, {
+      let doctorAPpointment = await fetch(`${API}/appointment/save`, {
         method: "POST",
         headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
           token: token,
         },
-        body: data,
+        body: JSON.stringify(data),
       });
-      jobApplication = await jobApplication.json();
-      return jobApplication;
+      doctorAPpointment = await doctorAPpointment.json();
+      return doctorAPpointment;
     } catch (error) {
       console.log(error);
     }
   };
 
-  jobApplications = async (token) => {
+  appointmentList = async (token) => {
     try {
-      let jobApplications = await fetch(`${API}/job-application/my-list`, {
+      let appointmentList = await fetch(`${API}/appointment/my-list`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           token: token,
         },
       });
-      jobApplications = await jobApplications.json();
-      return jobApplications;
+      appointmentList = await appointmentList.json();
+      return appointmentList;
     } catch (error) {
       console.log(error);
     }

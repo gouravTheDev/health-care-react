@@ -4,14 +4,11 @@ import Home from "./core/Home";
 import Signup from "./user/Signup";
 import Signin from "./user/Signin";
 import PrivateRoute from "./auth/helper/PrivateRoutes";
-import UserJobList from "./user/job/JobList";
-import UserJobApplicationList from "./user/job-application/UserJobApplicationList";
+import UserDoctorList from "./user/doctor/UserDoctorList";
+import UserAppointmentList from "./user/appointment/UserAppointmentList";
+import AdminDoctorList from "./admin/doctor/DoctorList";
+import AdminAppointmentList from "./admin/appointment/AdminAppointmentList";
 
-import AdminJobList from "./admin/job/JobList";
-import AdminJobApplicationList from "./admin/job-application/AdminJobApplicationList";
-
-// import AdminJobList from "./admin/job/list";
-// import AdminJobApplicationList from "./admin/job-application/list";
 
 const Routes = () => {
   return (
@@ -21,11 +18,11 @@ const Routes = () => {
         <Route path="/signup" exact component={Signup} />
         <Route path="/signin" exact component={Signin} />
         {/* <Route path="/profile" exact component={Profile} /> */}
-        <PrivateRoute path="/user/job/list" exact component={UserJobList} />
-        <PrivateRoute path="/user/job-application/list" exact component={UserJobApplicationList} />
+        <PrivateRoute path="/user/doctor/list" exact component={UserDoctorList} />
+        <PrivateRoute path="/user/appointment/list" exact component={UserAppointmentList} />
 
-        <PrivateRoute path="/admin/job/list" exact component={AdminJobList} />
-        <PrivateRoute path="/admin/job-application/:id" exact component={AdminJobApplicationList} />
+        <PrivateRoute path="/admin/doctor/list" exact component={AdminDoctorList} />
+        <PrivateRoute path="/admin/appointment/:id" exact component={AdminAppointmentList} />
       </Switch>
     </BrowserRouter>
   );

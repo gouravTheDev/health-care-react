@@ -31,7 +31,7 @@ const Menu = ({ history }) => {
           href="#"
           style={{ borderRadius: "24px" }}
         >
-          Job Portal
+          Health Care
         </a>
         {!isAutheticated() && (
           <Fragment>
@@ -64,9 +64,9 @@ const Menu = ({ history }) => {
                   color: "#ffffff",
                   fontSize: "20px",
                 }}
-                to="/user/job/list"
+                to="/user/doctor/list"
               >
-                All Jobs
+                Doctors
               </Link>
             </li>
             <li className="nav-item mr-3">
@@ -79,9 +79,9 @@ const Menu = ({ history }) => {
                   color: "#ffffff",
                   fontSize: "20px",
                 }}
-                to="/user/job-application/list"
+                to="/user/appointment/list"
               >
-                My Applications
+                My Appointments
               </Link>
             </li>
             <li className="nav-item mr-3">
@@ -117,9 +117,9 @@ const Menu = ({ history }) => {
                   color: "#ffffff",
                   fontSize: "20px",
                 }}
-                to="/admin/job/list"
+                to="/admin/doctor/list"
               >
-                All Jobs
+                Doctors
               </Link>
             </li>
             <li className="nav-item mr-3">

@@ -1,9 +1,9 @@
 import { API } from "../../backend";
 
 class UserApi {
-  jobList = async (token) => {
+  doctorList = async (token) => {
     try {
-      let jobList = await fetch(`${API}/job/list`, {
+      let doctorList = await fetch(`${API}/doctor/list`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -11,32 +11,32 @@ class UserApi {
           token: token,
         },
       });
-      jobList = await jobList.json();
-      return jobList;
+      doctorList = await doctorList.json();
+      return doctorList;
     } catch (error) {
       console.log(error);
     }
   };
 
-  jobApplications = async (token, jobId) => {
+  appointments = async (token, doctorId) => {
     try {
-      let jobApplications = await fetch(`${API}/job-application/job-list/${jobId}`, {
+      let doctorAppointments = await fetch(`${API}/appointment/doctor/${doctorId}`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           token: token,
         },
       });
-      jobApplications = await jobApplications.json();
-      return jobApplications;
+      doctorAppointments = await doctorAppointments.json();
+      return doctorAppointments;
     } catch (error) {
       console.log(error);
     }
   };
 
-  updateJobApplication = async (token, data) => {
+  updateAppointment = async (token, data) => {
     try {
-      let jobApplicationRecord = await fetch(`${API}/job-application/update`, {
+      let jobApplicationRecord = await fetch(`${API}/appointment/update`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -52,9 +52,9 @@ class UserApi {
     }
   };
 
-  createJob = async (token, data) => {
+  createDoctor = async (token, data) => {
     try {
-      let jobData = await fetch(`${API}/job/create`, {
+      let doctorData = await fetch(`${API}/doctor/create`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -63,17 +63,17 @@ class UserApi {
         },
         body: JSON.stringify(data),
       });
-      jobData = await jobData.json();
-      console.log(jobData);
-      return jobData;
+      doctorData = await doctorData.json();
+      console.log(doctorData);
+      return doctorData;
     } catch (error) {
       console.log(error);
     }
   };
 
-  updateJob = async (token, data) => {
+  updateDoctor = async (token, data) => {
     try {
-      let updateJob = await fetch(`${API}/job/update`, {
+      let updateDoctor = await fetch(`${API}/doctor/update`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -82,16 +82,16 @@ class UserApi {
         },
         body: JSON.stringify(data),
       });
-      updateJob = await updateJob.json();
-      return updateJob;
+      updateDoctor = await updateDoctor.json();
+      return updateDoctor;
     } catch (error) {
       console.log(error);
     }
   };
 
-  deleteJob = async (token, id) => {
+  deleteDoctor = async (token, id) => {
     try {
-      let updateJob = await fetch(`${API}/job/delete`, {
+      let updateJob = await fetch(`${API}/doctor/delete`, {
         method: "POST",
         headers: {
           Accept: "application/json",

@@ -23,7 +23,7 @@ export default function Home() {
       <Link
         style={{
           borderRadius: "40px",
-          background: "#F72D2D",
+          background: "#1ACB02",
           color: "#ffffff",
           fontSize: "30px",
         }}
@@ -42,8 +42,8 @@ export default function Home() {
           <div className="container pt-4">
             <div className="row">
               <div className="col-12 text-center">
-                <h1 className="text-center font-weight-bold">Job Portal for Everyone</h1>
-                <h5 className="text-center">Get your dream job. Create your free account and apply to jobs now!</h5>
+                <h1 className="text-center font-weight-bold">Health Care App</h1>
+                <h5 className="text-center">Book Appointment from your home! Get hundreds of Doctors in a minute!</h5>
                 {homeButton()} <br />
                 <img src="/home.jpg" className="homeImg" />
               </div>

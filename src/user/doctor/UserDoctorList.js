@@ -10,37 +10,42 @@ const cookies = new Cookies();
 
 const JobList = () => {
   // State Variables
-  const [showJobDetails, setShowJobDetails] = useState(false);
+  const [showDoctorDetails, setShowDoctorDetails] = useState(false);
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const [token, setToken] = useState("");
-  const [jobDetails, setJobDetails] = useState({});
-  const [jobs, setJobs] = useState([]);
-  const [resume, setResume] = useState("");
+  const [doctorDetails, setDoctorDetails] = useState({});
+  const [doctors, setDoctors] = useState([]);
+
+  const [appointment, setAppointment] = useState({
+    date: "",
+    details: "",
+    doctor: ""
+  });
 
   // Handling Changes
 
-  const handleClose = () => setShowJobDetails(false);
+  const handleClose = () => setShowDoctorDetails(false);
 
-  const handleShowJobDetails = async (jobId) => {
-    setShowJobDetails(true);
-    jobs.map((job) => {
-      if (job._id.toString() == jobId.toString()) {
-        setJobDetails(job);
+  const handleShowDoctorDetails = async (docId) => {
+    setShowDoctorDetails(true);
+    doctors.map((doc) => {
+      if (doc._id.toString() == docId.toString()) {
+        setDoctorDetails(doc);
+        setAppointment({ ...appointment, doctor: docId });
       }
     });
   };
 
-  const handleFileChange = (name) => (event) => {
-    console.log(event.target.files[0]);
-    setResume(event.target.files[0]);
+  const handleChange = (name) => (event) => {
+    setAppointment({ ...appointment, [name]: event.target.value });
   };
 
-  async function fetchJobList() {
+  async function fetchDoctorList() {
     try {
       let token = cookies.get("token");
       setToken(token);
-      let response = await UserApi.jobList(token);
-      setJobs(response.data);
+      let response = await UserApi.doctorList(token);
+      setDoctors(response.data);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -50,59 +55,57 @@ const JobList = () => {
   // Use Effect Method
 
   useEffect(() => {
-    fetchJobList();
+    fetchDoctorList();
   }, []);
 
   // Execution Methods
 
-  const applyJob = async (event) => {
+  const makeAppointment = async (event) => {
+    console.log(appointment)
     event.preventDefault();
-    if (resume == "") {
+    if (appointment.details == "" || appointment.date == "") {
       return;
     }
-    let formData = new FormData();
-    formData.set("resume", resume);
-    formData.set("job", jobDetails._id);
-    let applyJob = await UserApi.applyJob(token, formData);
-    if (applyJob.status == 200) {
+    let makeAppointment = await UserApi.makeAppointment(token, appointment);
+    console.log(makeAppointment)
+    if (makeAppointment.status == 200) {
       setShowSuccessMsg(true);
     } else {
       return;
     }
-    fetchJobList();
+    fetchDoctorList();
     handleClose();
   };
 
   return (
-    <Base title="All Jobs">
+    <Base title="All doctors">
       <div className="row">
         {showSuccessMsg && (
           <div className="col-8 mx-auto">
             <div className="alert alert-success text-center">
-              You have successfully applied to the job!
+              You have successfully booked the appointment!
             </div>
           </div>
         )}
-        {jobs.map((job) => (
-          <div key={job._id} className="col-md-10 col-sm-12 mb-3 mx-auto">
+        {doctors.map((doctor) => (
+          <div key={doctor._id} className="col-md-6 col-sm-12 mb-3 mx-auto">
             <div className="card-cus shadow">
               <div className="card-body">
                 <h4
                   style={{ color: "#000" }}
                   className="text-center font-weight-bold"
                 >
-                  {job.title}
+                  Doctor: {doctor.title}
                 </h4>
                 <div className="text-center">
-                  <span>Salary:- {job.salary}</span>
-                  <span className="ml-4">Positions:- {job.position}</span>
+                  <h5>Fees:- {doctor.fees}</h5>
                 </div>
-                <div className="text-left text-justify mt-3">
-                  Job Details:- {job.details}
+                <div className="text-center text-justify mt-3">
+                  <h5> {doctor.speciality} </h5>
                 </div>
                 <div className="row">
                   <div
-                    className="col-8 text-left"
+                    className="col-6 text-left"
                     style={{
                       position: "",
                       bottom: "2px",
@@ -114,26 +117,26 @@ const JobList = () => {
                       style={{ bottom: "2px", right: "30px" }}
                     >
                       <span style={{ color: "#9E9EA1" }}>
-                        Posted On:- {moment(job.createdAt).format("DD/MM/YYYY")}
+                        Created On:- {moment(doctor.createdAt).format("DD/MM/YYYY")}
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 text-right pt-2">
-                    {!job.isApplied ? (
+                  <div className="col-6 text-right pt-2">
+                    {!doctor.isBooked ? (
                       <button
                         className="btn btn-primary"
-                        onClick={() => handleShowJobDetails(job._id)}
+                        onClick={() => handleShowDoctorDetails(doctor._id)}
                         style={{ cursor: "pointer" }}
                       >
-                        Apply to this job
+                        Make Appointment
                       </button>
                     ) : (
                       <button
                         className="btn btn-primary"
-                        disabled="true"
+                        disabled={true}
                         style={{ cursor: "not-allowed" }}
                       >
-                        Already Applied
+                        Appointment Taken
                       </button>
                     )}
                   </div>
@@ -144,39 +147,49 @@ const JobList = () => {
         ))}
       </div>
 
-      {/* Apply Job Modal Starts */}
+      {/*  Modal Starts */}
       <Modal
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={showJobDetails}
+        show={showDoctorDetails}
         onHide={handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Job Details</Modal.Title>
+          <Modal.Title>Doctor Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h6>Job Title:- {jobDetails.title}</h6>
-          <h6>Positions Available:- {jobDetails.position}</h6>
-          <h6>Salary:- {jobDetails.salary}</h6>
-          <h6>Job Description:- {jobDetails.details}</h6>
+          <h6>Doctor Name:- {doctorDetails.title}</h6>
+          <h6>Fees:- {doctorDetails.fees}</h6>
+          <h6>Speciality:- {doctorDetails.speciality}</h6>
           <hr />
-          <h5>Apply to this Job</h5>
+          <h5>Create Appointment</h5>
           <hr />
           <form>
             <div className="row">
               <div className="col-md-12 col-sm-12 mx-auto mb-3 form-group">
-                <label>Upload Resume</label>
+                <label>Select Date</label>
                 <input
-                  onChange={handleFileChange(this)}
+                  onChange={handleChange("date")}
+                  value={appointment.date}
                   className="form-control"
-                  type="file"
-                  placeholder="Enter Project Name"
+                  type="date"
+                  placeholder="Enter Appointment Date"
+                />
+              </div>
+              <div className="col-md-12 col-sm-12 mx-auto mb-3 form-group">
+                <label>Details</label>
+                <input
+                  onChange={handleChange("details")}
+                  className="form-control"
+                  type="text"
+                  value={appointment.details}
+                  placeholder="Enter Appointment Details"
                 />
               </div>
               <div className="col-md-12 col-sm-12 mx-auto text-right">
-                <button onClick={applyJob} className="btn btn-success">
-                  Apply Now
+                <button onClick={makeAppointment} className="btn btn-success">
+                  Save
                 </button>
               </div>
             </div>

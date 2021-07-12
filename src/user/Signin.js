@@ -56,15 +56,15 @@ const Signin = () => {
   const performRedirect = () => {
     if (didRedirect) {
       if (admin) {
-        return <Redirect to="/admin/job/list" />;
+        return <Redirect to="/admin/doctor/list" />;
       } else {
-        return <Redirect to="/user/job/list" />;
+        return <Redirect to="/user/doctor/list" />;
       }
     }
     if (isAutheticated() && isAdmin()) {
-      return <Redirect to="/admin/job/list" />;
+      return <Redirect to="/admin/doctor/list" />;
     } else if (isAutheticated()) {
-      return <Redirect to="/user/job/list" />;
+      return <Redirect to="/user/doctor/list" />;
     }
   };
 
