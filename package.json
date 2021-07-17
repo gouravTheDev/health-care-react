@@ -1,5 +1,5 @@
 {
-  "name": "jobrecruit",
+  "name": "employeetraining",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,7 +21,7 @@
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
-    "start": "PORT=3002 react-scripts start",
+    "start": "PORT=3003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

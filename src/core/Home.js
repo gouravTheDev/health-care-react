@@ -42,8 +42,8 @@ export default function Home() {
           <div className="container pt-4">
             <div className="row">
               <div className="col-12 text-center">
-                <h1 className="text-center font-weight-bold">Health Care App</h1>
-                <h5 className="text-center">Book Appointment from your home! Get hundreds of Doctors in a minute!</h5>
+                <h1 className="text-center font-weight-bold">Employee Training App</h1>
+                <h5 className="text-center">Get all the Training from this application very easily!</h5>
                 {homeButton()} <br />
                 <img src="/home.jpg" className="homeImg" />
               </div>

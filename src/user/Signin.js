@@ -56,15 +56,15 @@ const Signin = () => {
   const performRedirect = () => {
     if (didRedirect) {
       if (admin) {
-        return <Redirect to="/admin/doctor/list" />;
+        return <Redirect to="/admin/chapter/list" />;
       } else {
-        return <Redirect to="/user/doctor/list" />;
+        return <Redirect to="/user/chapter/list" />;
       }
     }
     if (isAutheticated() && isAdmin()) {
-      return <Redirect to="/admin/doctor/list" />;
+      return <Redirect to="/admin/chapter/list" />;
     } else if (isAutheticated()) {
-      return <Redirect to="/user/doctor/list" />;
+      return <Redirect to="/user/chapter/list" />;
     }
   };
 
@@ -125,9 +125,9 @@ const Signin = () => {
               Login
             </button>
           </form>
-          <div className="form-group text-center mt-4">
+          {/* <div className="form-group text-center mt-4">
             <Link to="/signup">New User? Sign Up</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     );

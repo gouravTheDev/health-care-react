@@ -31,7 +31,7 @@ const Menu = ({ history }) => {
           href="#"
           style={{ borderRadius: "24px" }}
         >
-          Health Care
+          Employee Training
         </a>
         {!isAutheticated() && (
           <Fragment>
@@ -64,24 +64,9 @@ const Menu = ({ history }) => {
                   color: "#ffffff",
                   fontSize: "20px",
                 }}
-                to="/user/doctor/list"
+                to="/user/chapter/list"
               >
-                Doctors
-              </Link>
-            </li>
-            <li className="nav-item mr-3">
-              <Link
-                className="btn"
-                style={{ cursor: "pointer" }}
-                style={{
-                  borderRadius: "30px",
-                  background: "#3C83E5",
-                  color: "#ffffff",
-                  fontSize: "20px",
-                }}
-                to="/user/appointment/list"
-              >
-                My Appointments
+                Chapters
               </Link>
             </li>
             <li className="nav-item mr-3">
@@ -117,9 +102,24 @@ const Menu = ({ history }) => {
                   color: "#ffffff",
                   fontSize: "20px",
                 }}
-                to="/admin/doctor/list"
+                to="/admin/user/list"
               >
-                Doctors
+                Users
+              </Link>
+            </li>
+            <li className="nav-item mr-3">
+              <Link
+                className="btn"
+                style={{ cursor: "pointer" }}
+                style={{
+                  borderRadius: "30px",
+                  background: "#3C83E5",
+                  color: "#ffffff",
+                  fontSize: "20px",
+                }}
+                to="/admin/chapter/list"
+              >
+                Chapters
               </Link>
             </li>
             <li className="nav-item mr-3">
